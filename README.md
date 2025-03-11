@@ -26,9 +26,6 @@
 - Multiplataforma:
     - React Native
         - Limguagem: JavaScript
-
-    - Flutter (nosso)
-        - Linguagem: JavaScript
         - Gera APK nativos
     - Flutter (nosso)
         - Linguagem: Dart
