@@ -61,6 +61,10 @@ class _ToDoListAppState extends State<ToDoListApp> {
                     ),
               ),
             ),
+            ElevatedButton(
+              onPressed: _removerConcluidas,
+               child: Text("Remover Concluídas"),
+               style: ElevatedButton.styleFrom(backgroundColor: Colors.red))
           ],
         ),
       ),
@@ -75,5 +79,11 @@ class _ToDoListAppState extends State<ToDoListApp> {
         _tarefaController.clear();
       });
     }
+  }
+
+  void _removerConcluidas() {
+    setState((){
+      _tarefa.removeWhere((tarefa)=>tarefa["concluida"]);
+    });
   }
 }
