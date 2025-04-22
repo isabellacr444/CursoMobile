@@ -1,0 +1,1 @@
+ C:\\Users\\CastelloA\\Documents\\CursoMobile\\sa04_somativa\\.dart_tool\\flutter_build\\2d8fe639a8717a584482cf7469eb8546\\native_assets.json: 
