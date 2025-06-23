@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:treino/models/training_rotine.dart';
-import 'package:treino/services/training_routine_servece.dart';
-import 'package:treino/views/routine_detail_screen.dart';
-import 'package:treino/views/training_routine_form_screen.dart'; // Importe sua tela de formulário
+import 'package:treino/models/rotina_de_treino.dart'; // Importação do modelo RotinaDeTreino atualizado
+import 'package:treino/services/rotina_de_treino_service.dart'; // Importação do Serviço de Rotina de Treino atualizado
+import 'package:treino/views/tela_treino.dart'; // Importação da tela de detalhes da rotina atualizada
+import 'package:treino/views/tela_rotina.dart'; // Importação da tela de formulário da rotina atualizada
 
 void main() {
   runApp(TreinoApp());
@@ -16,63 +16,63 @@ class TreinoApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TrainingRoutineListScreen(),
+      home: TelaListaRotinasDeTreino(), // Renomeado
     );
   }
 }
 
-class TrainingRoutineListScreen extends StatefulWidget {
+class TelaListaRotinasDeTreino extends StatefulWidget { // Renomeado
   @override
-  _TrainingRoutineListScreenState createState() => _TrainingRoutineListScreenState();
+  _TelaListaRotinasDeTreinoState createState() => _TelaListaRotinasDeTreinoState(); // Renomeado
 }
 
-class _TrainingRoutineListScreenState extends State<TrainingRoutineListScreen> {
-  final TrainingRoutineService _service = TrainingRoutineService();
-  List<TrainingRoutine> _routines = [];
+class _TelaListaRotinasDeTreinoState extends State<TelaListaRotinasDeTreino> { // Renomeado
+  final RotinaDeTreinoService _servico = RotinaDeTreinoService(); // Renomeado _service para _servico
+  List<RotinaDeTreino> _rotinas = []; // Renomeado _routines para _rotinas
 
   @override
   void initState() {
     super.initState();
-    _loadRoutines();
+    _carregarRotinas(); // Renomeado _loadRoutines para _carregarRotinas
   }
 
-  Future<void> _loadRoutines() async {
-    final routines = await _service.getRoutines();
+  Future<void> _carregarRotinas() async { // Renomeado _loadRoutines para _carregarRotinas
+    final rotinas = await _servico.getRotinas(); // Renomeado e chamando método do serviço traduzido
     setState(() {
-      _routines = routines;
+      _rotinas = rotinas;
     });
   }
 
-  void _goToAddRoutine() async {
-    final created = await Navigator.push(
+  void _irParaAdicionarRotina() async { // Renomeado _goToAddRoutine
+    final criado = await Navigator.push( // Renomeado 'created' para 'criado'
       context,
-      MaterialPageRoute(builder: (_) => TrainingRoutineFormScreen()),
+      MaterialPageRoute(builder: (_) => TelaFormularioRotina()), // Referência à tela de formulário traduzida
     );
 
-    if (created == true) {
-      _loadRoutines();
+    if (criado == true) {
+      _carregarRotinas(); // Recarregar rotinas
     }
   }
 
-  void _openRoutineDetail(TrainingRoutine routine) {
+  void _abrirDetalhesDaRotina(RotinaDeTreino rotina) { // Renomeado _openRoutineDetail e parâmetro
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => RoutineDetailScreen(routine: routine)),
+      MaterialPageRoute(builder: (_) => TelaDetalhesRotina(rotina: rotina)), // Referência à tela de detalhes traduzida
     );
   }
 
-  void _goToEditRoutine(TrainingRoutine routine) async {
-    final updated = await Navigator.push(
+  void _irParaEditarRotina(RotinaDeTreino rotina) async { // Renomeado _goToEditRoutine e parâmetro
+    final atualizado = await Navigator.push( // Renomeado 'updated' para 'atualizado'
       context,
-      MaterialPageRoute(builder: (_) => TrainingRoutineFormScreen(routine: routine)),
+      MaterialPageRoute(builder: (_) => TelaFormularioRotina(rotina: rotina)), // Referência à tela de formulário traduzida
     );
-    if (updated == true) {
-      _loadRoutines();
+    if (atualizado == true) {
+      _carregarRotinas(); // Recarregar rotinas
     }
   }
 
-  Future<void> _deleteRoutine(int routineId) async {
-    final confirm = await showDialog<bool>(
+  Future<void> _deletarRotina(int idRotina) async { // Renomeado _deleteRoutine e parâmetro
+    final confirmar = await showDialog<bool>( // Renomeado 'confirm' para 'confirmar'
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Confirmar Exclusão'),
@@ -90,9 +90,9 @@ class _TrainingRoutineListScreenState extends State<TrainingRoutineListScreen> {
       ),
     );
 
-    if (confirm == true) {
-      await _service.deleteRoutine(routineId);
-      _loadRoutines();
+    if (confirmar == true) {
+      await _servico.deletarRotina(idRotina); // Chamando método traduzido do serviço
+      _carregarRotinas(); // Recarregar rotinas
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Rotina excluída com sucesso!')),
       );
@@ -107,23 +107,23 @@ class _TrainingRoutineListScreenState extends State<TrainingRoutineListScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
-            onPressed: _loadRoutines,
+            onPressed: _carregarRotinas, // Chamando método traduzido
             tooltip: 'Atualizar lista',
           ),
         ],
       ),
-      body: _routines.isEmpty
+      body: _rotinas.isEmpty // Usando _rotinas
           ? Center(child: Text('Nenhuma rotina cadastrada'))
           : ListView.builder(
-              itemCount: _routines.length,
+              itemCount: _rotinas.length, // Usando _rotinas
               itemBuilder: (_, index) {
-                final routine = _routines[index];
+                final rotina = _rotinas[index]; // Renomeado 'routine' para 'rotina'
                 return Card(
                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   elevation: 3,
                   child: ExpansionTile(
                     title: Text(
-                      routine.name,
+                      rotina.nome, // Acessando 'nome' da rotina
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     children: [
@@ -131,13 +131,13 @@ class _TrainingRoutineListScreenState extends State<TrainingRoutineListScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: (routine.exercises == null || routine.exercises!.isEmpty) // <--- CORREÇÃO AQUI
+                          children: rotina.exercicios.isEmpty // CORREÇÃO: Não é mais anulável
                               ? [Text('Nenhum exercício nesta rotina.')]
-                              : routine.exercises!.map((exercise) {
+                              : rotina.exercicios.map((exercicio) { // Acessando 'exercicios' da rotina e renomeando
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 4.0),
                                     child: Text(
-                                      '• ${exercise.name}: ${exercise.series}x${exercise.repetitions} (${exercise.load})',
+                                      '• ${exercicio.nome}: ${exercicio.series}x${exercicio.repeticoes} (${exercicio.carga})', // Acessando propriedades do exercício
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   );
@@ -149,11 +149,11 @@ class _TrainingRoutineListScreenState extends State<TrainingRoutineListScreen> {
                         children: [
                           IconButton(
                             icon: Icon(Icons.edit, color: Colors.blue),
-                            onPressed: () => _goToEditRoutine(routine),
+                            onPressed: () => _irParaEditarRotina(rotina), // Chamando método traduzido
                           ),
                           IconButton(
                             icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _deleteRoutine(routine.id!),
+                            onPressed: () => _deletarRotina(rotina.id!), // Chamando método traduzido
                           ),
                         ],
                       ),
@@ -163,7 +163,7 @@ class _TrainingRoutineListScreenState extends State<TrainingRoutineListScreen> {
               },
             ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _goToAddRoutine,
+        onPressed: _irParaAdicionarRotina, // Chamando método traduzido
         child: Icon(Icons.add),
         tooltip: 'Adicionar nova rotina',
       ),

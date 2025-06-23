@@ -1,0 +1,279 @@
+import 'package:flutter/material.dart';
+import 'package:treino/models/exercicio.dart'; // Importação do modelo Exercicio atualizado
+import 'package:treino/models/rotina_de_treino.dart'; // Importação do modelo RotinaDeTreino atualizado
+
+import 'package:treino/services/exercicio_service.dart'; // Importação do Serviço de Exercício atualizado
+import 'package:treino/services/rotina_de_treino_service.dart'; // Importação do Serviço de Rotina de Treino atualizado
+
+class TelaFormularioRotina extends StatefulWidget { // Renomeado para TelaFormularioRotina
+  final RotinaDeTreino? rotina; // Renomeado para 'rotina'
+
+  TelaFormularioRotina({this.rotina}); // Renomeado para 'rotina'
+
+  @override
+  _TelaFormularioRotinaState createState() => _TelaFormularioRotinaState(); // Renomeado
+}
+
+class _TelaFormularioRotinaState extends State<TelaFormularioRotina> { // Renomeado
+  final _chaveFormulario = GlobalKey<FormState>(); // Renomeado para _chaveFormulario
+  late String _nomeRotina; // Renomeado para _nomeRotina
+  late String _objetivo; // Renomeado para _objetivo
+  List<Exercicio> _exercicios = []; // Renomeado para _exercicios
+
+  final RotinaDeTreinoService _servicoRotina = RotinaDeTreinoService(); // Renomeado
+  final ExercicioService _servicoExercicio = ExercicioService(); // Renomeado
+
+  @override
+  void initState() {
+    super.initState();
+    _nomeRotina = widget.rotina?.nome ?? ''; // Acessando 'nome' da rotina
+    _objetivo = widget.rotina?.objetivo ?? ''; // Acessando 'objetivo' da rotina
+
+    if (widget.rotina != null && widget.rotina!.id != null) {
+      _carregarExerciciosParaRotina(widget.rotina!.id!); // Renomeado e acessando 'id'
+    }
+  }
+
+  Future<void> _carregarExerciciosParaRotina(int idRotina) async { // Renomeado
+    final exercicios = await _servicoExercicio.getExerciciosPorIdRotina(idRotina); // Chamando método traduzido do serviço
+    setState(() {
+      _exercicios = exercicios;
+    });
+  }
+
+  Future<void> _adicionarOuEditarExercicio({Exercicio? exercicio, int? indice}) async { // Renomeado e parâmetros traduzidos
+    // Implemente a lógica de adicionar/editar exercício via diálogo ou nova tela.
+    // Exemplo usando um diálogo simples para adicionar um novo exercício à lista temporária:
+    final novoExercicio = await showDialog<Exercicio>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(exercicio == null ? 'Novo Exercício' : 'Editar Exercício'),
+        content: SingleChildScrollView(
+          child: ExercicioFormularioDialog(exercicio: exercicio), // Classe auxiliar para o formulário no diálogo
+        ),
+      ),
+    );
+
+    if (novoExercicio != null) {
+      setState(() {
+        if (indice != null) {
+          _exercicios[indice] = novoExercicio; // Atualiza exercício existente
+        } else {
+          _exercicios.add(novoExercicio); // Adiciona novo exercício
+        }
+      });
+    }
+  }
+
+  void _removerExercicio(int indice) { // Renomeado e parâmetro traduzido
+    setState(() {
+      _exercicios.removeAt(indice);
+    });
+  }
+
+  Future<void> _salvarRotina() async { // Renomeado
+    if (_chaveFormulario.currentState!.validate()) {
+      _chaveFormulario.currentState!.save();
+
+      final novaRotina = RotinaDeTreino( // Renomeado para novaRotina
+        id: widget.rotina?.id,
+        nome: _nomeRotina, // Usando _nomeRotina
+        objetivo: _objetivo, // Usando _objetivo
+      );
+
+      int idRotinaSalva; // Renomeado
+      if (widget.rotina == null) {
+        idRotinaSalva = await _servicoRotina.inserirRotina(novaRotina); // Chamando método traduzido do serviço
+      } else {
+        await _servicoRotina.atualizarRotina(novaRotina); // Chamando método traduzido do serviço
+        idRotinaSalva = novaRotina.id!;
+        // Antes de inserir os novos, apaga os antigos para evitar duplicação em caso de edição
+        await _servicoExercicio.deletarExerciciosPorIdRotina(idRotinaSalva); // Chamando método traduzido do serviço
+      }
+
+      for (var exercicio in _exercicios) { // Itera sobre _exercicios
+        exercicio.idRotina = idRotinaSalva; // Atribui idRotina
+        await _servicoExercicio.inserirExercicio(exercicio); // Chamando método traduzido do serviço
+      }
+
+      Navigator.pop(context, true); // Retorna 'true' para indicar sucesso
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.rotina == null ? 'Nova Rotina' : 'Editar Rotina'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Form(
+          key: _chaveFormulario,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                initialValue: _nomeRotina,
+                decoration: InputDecoration(labelText: 'Nome da Rotina'),
+                validator: (value) => value == null || value.isEmpty ? 'Insira o nome da rotina' : null,
+                onSaved: (value) => _nomeRotina = value!.trim(),
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                initialValue: _objetivo,
+                decoration: InputDecoration(labelText: 'Objetivo (Ex: Força, Hipertrofia)'),
+                onSaved: (value) => _objetivo = value!.trim(),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Exercícios:',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              ElevatedButton.icon(
+                onPressed: () => _adicionarOuEditarExercicio(), // Chamando método traduzido
+                icon: Icon(Icons.add),
+                label: Text('Adicionar Exercício'),
+              ),
+              SizedBox(height: 10),
+              Expanded(
+                child: _exercicios.isEmpty
+                    ? Center(child: Text('Nenhum exercício adicionado ainda.'))
+                    : ListView.builder(
+                        itemCount: _exercicios.length,
+                        itemBuilder: (context, index) {
+                          final exercicio = _exercicios[index]; // Renomeado
+                          return Card(
+                            margin: EdgeInsets.symmetric(vertical: 8),
+                            child: ListTile(
+                              title: Text(exercicio.nome), // Acessando 'nome' do exercício
+                              subtitle: Text('${exercicio.series} Séries, ${exercicio.repeticoes} Reps, ${exercicio.carga} Carga'), // Acessando propriedades do exercício
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.edit, color: Colors.blue),
+                                    onPressed: () => _adicionarOuEditarExercicio(exercicio: exercicio, indice: index), // Chamando método traduzido
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () => _removerExercicio(index), // Chamando método traduzido
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _salvarRotina, // Chamando método traduzido
+                child: Text('Salvar Rotina'),
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  textStyle: TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Classe auxiliar para o diálogo de formulário de exercício
+class ExercicioFormularioDialog extends StatefulWidget {
+  final Exercicio? exercicio;
+
+  ExercicioFormularioDialog({this.exercicio});
+
+  @override
+  _ExercicioFormularioDialogState createState() => _ExercicioFormularioDialogState();
+}
+
+class _ExercicioFormularioDialogState extends State<ExercicioFormularioDialog> {
+  final _formKeyDialog = GlobalKey<FormState>();
+  late String _nome;
+  late int _series;
+  late String _repeticoes;
+  late String _carga;
+  late String _tipo;
+
+  @override
+  void initState() {
+    super.initState();
+    _nome = widget.exercicio?.nome ?? '';
+    _series = widget.exercicio?.series ?? 1;
+    _repeticoes = widget.exercicio?.repeticoes ?? '';
+    _carga = widget.exercicio?.carga ?? '';
+    _tipo = widget.exercicio?.tipo ?? '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKeyDialog,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            initialValue: _nome,
+            decoration: InputDecoration(labelText: 'Nome do Exercício'),
+            validator: (value) => value == null || value.isEmpty ? 'Insira o nome' : null,
+            onSaved: (value) => _nome = value!.trim(),
+          ),
+          TextFormField(
+            initialValue: _series.toString(),
+            decoration: InputDecoration(labelText: 'Séries'),
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value == null || value.isEmpty) return 'Insira o número de séries';
+              if (int.tryParse(value) == null) return 'Digite um número válido';
+              return null;
+            },
+            onSaved: (value) => _series = int.parse(value!),
+          ),
+          TextFormField(
+            initialValue: _repeticoes,
+            decoration: InputDecoration(labelText: 'Repetições'),
+            validator: (value) => value == null || value.isEmpty ? 'Insira as repetições' : null,
+            onSaved: (value) => _repeticoes = value!.trim(),
+          ),
+          TextFormField(
+            initialValue: _carga,
+            decoration: InputDecoration(labelText: 'Carga'),
+            validator: (value) => value == null || value.isEmpty ? 'Insira a carga' : null,
+            onSaved: (value) => _carga = value!.trim(),
+          ),
+          TextFormField(
+            initialValue: _tipo,
+            decoration: InputDecoration(labelText: 'Tipo (Força, Cardio, Alongamento, etc.)'),
+            validator: (value) => value == null || value.isEmpty ? 'Insira o tipo' : null,
+            onSaved: (value) => _tipo = value!.trim(),
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              if (_formKeyDialog.currentState!.validate()) {
+                _formKeyDialog.currentState!.save();
+                final novoExercicio = Exercicio(
+                  id: widget.exercicio?.id,
+                  idRotina: 0, // Placeholder, será sobrescrito no _saveRoutine
+                  nome: _nome,
+                  series: _series,
+                  repeticoes: _repeticoes,
+                  carga: _carga,
+                  tipo: _tipo,
+                );
+                Navigator.pop(context, novoExercicio);
+              }
+            },
+            child: Text('Confirmar'),
+          ),
+        ],
+      ),
+    );
+  }
+}
