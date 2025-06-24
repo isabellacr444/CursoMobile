@@ -2,28 +2,28 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class AuxiliarBancoDados { // Renomeado para AuxiliarBancoDados
-  static Database? _bancoDeDados; // Renomeado para _bancoDeDados
-  static const String NOME_BD = 'training_app.db'; // Renomeado para NOME_BD
-  static const int VERSAO_BD = 1; // Renomeado para VERSAO_BD
+class AuxiliarBancoDados { 
+  static Database? _bancoDeDados; 
+  static const String NOME_BD = 'training_app.db'; 
+  static const int VERSAO_BD = 1; 
 
   // Nomes das tabelas
-  static const String TABELA_ROTINAS = 'rotinas'; // Renomeado para TABELA_ROTINAS
-  static const String TABELA_EXERCICIOS = 'exercicios'; // Renomeado para TABELA_EXERCICIOS
+  static const String TABELA_ROTINAS = 'rotinas'; 
+  static const String TABELA_EXERCICIOS = 'exercicios'; 
 
   // Colunas da tabela de Rotinas
-  static const String COLUNA_ROTINA_ID = 'id'; // Renomeado
-  static const String COLUNA_ROTINA_NOME = 'nome'; // Renomeado
-  static const String COLUNA_ROTINA_OBJETIVO = 'objetivo'; // Renomeado
+  static const String COLUNA_ROTINA_ID = 'id';
+  static const String COLUNA_ROTINA_NOME = 'nome';
+  static const String COLUNA_ROTINA_OBJETIVO = 'objetivo'; 
 
   // Colunas da tabela de Exercícios
-  static const String COLUNA_EXERCICIO_ID = 'id'; // Renomeado
-  static const String COLUNA_EXERCICIO_ID_ROTINA = 'idRotina'; // Renomeado para COLUNA_EXERCICIO_ID_ROTINA (Chave estrangeira)
-  static const String COLUNA_EXERCICIO_NOME = 'nome'; // Renomeado
-  static const String COLUNA_EXERCICIO_SERIES = 'series'; // Renomeado
-  static const String COLUNA_EXERCICIO_REPETICOES = 'repeticoes'; // Renomeado
-  static const String COLUNA_EXERCICIO_CARGA = 'carga'; // Renomeado
-  static const String COLUNA_EXERCICIO_TIPO = 'tipo'; // Renomeado
+  static const String COLUNA_EXERCICIO_ID = 'id'; 
+  static const String COLUNA_EXERCICIO_ID_ROTINA = 'idRotina'; 
+  static const String COLUNA_EXERCICIO_NOME = 'nome'; 
+  static const String COLUNA_EXERCICIO_SERIES = 'series'; 
+  static const String COLUNA_EXERCICIO_REPETICOES = 'repeticoes'; 
+  static const String COLUNA_EXERCICIO_CARGA = 'carga'; 
+  static const String COLUNA_EXERCICIO_TIPO = 'tipo'; 
 
 
   Future<Database> get database async {
@@ -33,13 +33,13 @@ class AuxiliarBancoDados { // Renomeado para AuxiliarBancoDados
     return _bancoDeDados!;
   }
 
-  _iniciarBancoDeDados() async { // Renomeado para _iniciarBancoDeDados
-    String caminho = join(await getDatabasesPath(), NOME_BD); // Renomeado para caminho e NOME_BD
+  _iniciarBancoDeDados() async { 
+    String caminho = join(await getDatabasesPath(), NOME_BD); 
     return await openDatabase(
       caminho,
-      version: VERSAO_BD, // Renomeado para VERSAO_BD
-      onCreate: _aoCriar, // Renomeado para _aoCriar
-      onUpgrade: _aoAtualizar, // Renomeado para _aoAtualizar
+      version: VERSAO_BD, 
+      onCreate: _aoCriar, 
+      onUpgrade: _aoAtualizar, 
     );
   }
 
@@ -68,14 +68,11 @@ class AuxiliarBancoDados { // Renomeado para AuxiliarBancoDados
     ''');
   }
 
-  Future _aoAtualizar(Database db, int oldVersion, int newVersion) async { // Renomeado para _aoAtualizar
-    // Implementar atualizações do esquema do banco de dados aqui.
-    // Para simplificar durante o desenvolvimento, você pode descartar e recriar.
-    // Para produção, você escreveria declarações ALTER TABLE.
+   Future _aoAtualizar(Database db, int oldVersion, int newVersion) async { // Renomeado para _aoAtualizar
     if (oldVersion < newVersion) {
       await db.execute('DROP TABLE IF EXISTS $TABELA_EXERCICIOS');
       await db.execute('DROP TABLE IF EXISTS $TABELA_ROTINAS');
-      _aoCriar(db, newVersion); // Chamar o método _aoCriar para recriar as tabelas
+      _aoCriar(db, newVersion); 
     }
   }
 }

@@ -1,44 +1,44 @@
-import 'package:flutter/material.dart'; // Importação para ChangeNotifier
+import 'package:flutter/material.dart'; 
 import 'package:treino/services/exercicio_service.dart';
-import '../models/rotina_de_treino.dart'; // Nome do arquivo do modelo atualizado
-import '../models/exercicio.dart'; // Nome do arquivo do modelo atualizado
+import '../models/rotina_de_treino.dart'; 
+import '../models/exercicio.dart'; 
 
 class ExercicioController with ChangeNotifier {
   final ExercicioService _exercicioService = ExercicioService();
 
-  List<Exercicio> _exercicio = []; // Renomeado para Exercicio (singular)
-  List<Exercicio> get exercicio => _exercicio; // Renomeado para Exercicio
+  List<Exercicio> _exercicio = []; 
+  List<Exercicio> get exercicio => _exercicio; 
 
-  RotinaDeTreino? _rotinaAtual; // Renomeado para RotinaDeTreino e _rotinaAtual
+  RotinaDeTreino? _rotinaAtual; 
 
-  void definirRotinaAtual(RotinaDeTreino rotina) { // Renomeado para definirRotinaAtual e RotinaDeTreino
+  void definirRotinaAtual(RotinaDeTreino rotina) { 
     _rotinaAtual = rotina;
-    carregarExercicio(); // Renomeado para carregarExercicios
+    carregarExercicio(); 
   }
 
-  Future<void> carregarExercicio() async { // Renomeado para carregarExercicios
-    if (_rotinaAtual == null) return; // Referência a _rotinaAtual
+  Future<void> carregarExercicio() async { 
+    if (_rotinaAtual == null) return; 
 
-    _exercicio = await _exercicioService.getExercicioByRoutineId(_rotinaAtual!.id!); // Referência a _rotinaAtual
+    _exercicio = await _exercicioService.getExercicioByRoutineId(_rotinaAtual!.id!); 
     notifyListeners();
   }
 
-  Future<void> adicionarExercicio(Exercicio exercicio) async { // Renomeado para adicionarExercicio e Exercicio
-    if (_rotinaAtual == null) return; // Referência a _rotinaAtual
+  Future<void> adicionarExercicio(Exercicio exercicio) async { 
+    if (_rotinaAtual == null) return; 
 
     exercicio.routineId = _rotinaAtual!.id!; // Referência a _rotinaAtual
-    await _exercicioService.insertExercicio(exercicio); // Passa o objeto singular Exercicio
+    await _exercicioService.insertExercicio(exercicio); 
+    await carregarExercicio(); 
+  }
+
+  Future<void> atualizarExercicio(Exercicio exercicio) async { 
+    await _exercicioService.updateExercicio(exercicio); 
     await carregarExercicio(); // Renomeado para carregarExercicios
   }
 
-  Future<void> atualizarExercicio(Exercicio exercicio) async { // Renomeado para atualizarExercicio e Exercicio
-    await _exercicioService.updateExercicio(exercicio); // Passa o objeto singular Exercicio
-    await carregarExercicio(); // Renomeado para carregarExercicios
-  }
-
-  Future<void> deletarExercicio(int id) async { // Renomeado para deletarExercicio
+  Future<void> deletarExercicio(int id) async { 
     await _exercicioService.deleteExercicio(id);
-    await carregarExercicio(); // Renomeado para carregarExercicios
+    await carregarExercicio(); 
   }
 
   void limpar() { // Renomeado para limpar

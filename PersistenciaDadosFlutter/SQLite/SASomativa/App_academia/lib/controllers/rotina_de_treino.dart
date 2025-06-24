@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:treino/models/rotina_de_treino.dart'; // Importação do modelo atualizado
-import 'package:treino/services/rotina_de_treino_service.dart'; // Importação do serviço atualizado
+import 'package:treino/models/rotina_de_treino.dart'; 
+import 'package:treino/services/rotina_de_treino_service.dart'; 
 
 
 class RotinaDeTreinoController with ChangeNotifier {
-  // Serviço responsável pela comunicação com o banco de dados
+
   final RotinaDeTreinoService _servicoDeRotina = RotinaDeTreinoService();
 
   // Lista de rotinas disponíveis
@@ -22,7 +22,6 @@ class RotinaDeTreinoController with ChangeNotifier {
 
   // =============================
   // Métodos de controle de estado
-  // =============================
 
   /// Carrega todas as rotinas do banco de dados
   Future<void> carregarRotinas() async {
@@ -44,19 +43,19 @@ class RotinaDeTreinoController with ChangeNotifier {
 
   /// Adiciona uma nova rotina e recarrega a lista
   Future<void> adicionarRotina(RotinaDeTreino rotina) async {
-    await _servicoDeRotina.inserirRotina(rotina); // Assume que o serviço tem um método 'inserirRotina'
+    await _servicoDeRotina.inserirRotina(rotina); 
     await carregarRotinas();
   }
 
   /// Atualiza uma rotina existente e recarrega a lista
   Future<void> atualizarRotina(RotinaDeTreino rotina) async {
-    await _servicoDeRotina.atualizarRotina(rotina); // Assume que o serviço tem um método 'atualizarRotina'
+    await _servicoDeRotina.atualizarRotina(rotina); 
     await carregarRotinas();
   }
 
   /// Exclui uma rotina e recarrega a lista
   Future<void> deletarRotina(int id) async {
-    await _servicoDeRotina.deletarRotina(id); // Assume que o serviço tem um método 'deletarRotina'
+    await _servicoDeRotina.deletarRotina(id); 
 
     // Limpa a seleção se a rotina excluída for a selecionada
     if (_rotinaSelecionada?.id == id) {

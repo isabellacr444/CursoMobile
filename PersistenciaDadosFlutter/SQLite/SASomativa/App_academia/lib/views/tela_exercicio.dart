@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:treino/models/exercicio.dart'; // Importação do modelo Exercicio atualizado
-import 'package:treino/services/exercicio_service.dart'; // Importação do Serviço de Exercícios atualizado
-
+import 'package:treino/models/exercicio.dart'; 
+import 'package:treino/services/exercicio_service.dart'; 
 class TelaFormularioExercicio extends StatefulWidget { // Renomeado para TelaFormularioExercicio
   final int idRotina; // Renomeado para idRotina
-  final Exercicio? exercicio; // Renomeado para exercicio (opcional para edição)
+  final Exercicio? exercicio; 
 
   TelaFormularioExercicio({required this.idRotina, this.exercicio}); // Renomeado idRotina e exercicio
 
@@ -12,30 +11,30 @@ class TelaFormularioExercicio extends StatefulWidget { // Renomeado para TelaFor
   _TelaFormularioExercicioState createState() => _TelaFormularioExercicioState(); // Renomeado
 }
 
-class _TelaFormularioExercicioState extends State<TelaFormularioExercicio> { // Renomeado
+class _TelaFormularioExercicioState extends State<TelaFormularioExercicio> { 
   final _chaveFormulario = GlobalKey<FormState>(); // Renomeado para _chaveFormulario
-  final _servicoExercicio = ExercicioService(); // Renomeado para _servicoExercicio
+  final _servicoExercicio = ExercicioService(); 
 
   late String _nome; // Renomeado para _nome
-  late int _series; // Renomeado para _series
-  late String _repeticoes; // Renomeado para _repeticoes
-  late String _carga; // Renomeado para _carga
-  late String _tipo; // Renomeado para _tipo
+  late int _series; 
+  late String _repeticoes; 
+  late String _carga;
+  late String _tipo; 
 
   @override
   void initState() {
     super.initState();
 
-    _nome = widget.exercicio?.nome ?? ''; // Acessando a propriedade 'nome' do exercício
-    _series = widget.exercicio?.series ?? 1; // Acessando a propriedade 'series' do exercício
-    _repeticoes = widget.exercicio?.repeticoes ?? ''; // Acessando a propriedade 'repeticoes' do exercício
-    _carga = widget.exercicio?.carga ?? ''; // Acessando a propriedade 'carga' do exercício
-    _tipo = widget.exercicio?.tipo ?? ''; // Acessando a propriedade 'tipo' do exercício
+    _nome = widget.exercicio?.nome ?? ''; 
+    _series = widget.exercicio?.series ?? 1; 
+    _repeticoes = widget.exercicio?.repeticoes ?? ''; 
+    _carga = widget.exercicio?.carga ?? ''; 
+    _tipo = widget.exercicio?.tipo ?? ''; 
   }
 
   Future<void> _salvarExercicio() async { // Renomeado para _salvarExercicio
-    if (_chaveFormulario.currentState!.validate()) { // Referência à _chaveFormulario
-      _chaveFormulario.currentState!.save(); // Referência à _chaveFormulario
+    if (_chaveFormulario.currentState!.validate()) { 
+      _chaveFormulario.currentState!.save(); 
 
       final exercicio = Exercicio( // Instanciando o modelo Exercicio
         id: widget.exercicio?.id,

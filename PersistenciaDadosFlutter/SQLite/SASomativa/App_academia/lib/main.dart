@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:treino/models/rotina_de_treino.dart'; // Importação do modelo RotinaDeTreino atualizado
-import 'package:treino/services/rotina_de_treino_service.dart'; // Importação do Serviço de Rotina de Treino atualizado
-import 'package:treino/views/tela_treino.dart'; // Importação da tela de detalhes da rotina atualizada
-import 'package:treino/views/tela_rotina.dart'; // Importação da tela de formulário da rotina atualizada
+import 'package:treino/models/rotina_de_treino.dart'; 
+import 'package:treino/services/rotina_de_treino_service.dart'; 
+import 'package:treino/views/tela_treino.dart'; 
+import 'package:treino/views/tela_rotina.dart'; 
 
 void main() {
   runApp(TreinoApp());
@@ -16,19 +16,19 @@ class TreinoApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TelaListaRotinasDeTreino(), // Renomeado
+      home: TelaListaRotinasDeTreino(), 
     );
   }
 }
 
-class TelaListaRotinasDeTreino extends StatefulWidget { // Renomeado
+class TelaListaRotinasDeTreino extends StatefulWidget { 
   @override
-  _TelaListaRotinasDeTreinoState createState() => _TelaListaRotinasDeTreinoState(); // Renomeado
+  _TelaListaRotinasDeTreinoState createState() => _TelaListaRotinasDeTreinoState(); 
 }
 
-class _TelaListaRotinasDeTreinoState extends State<TelaListaRotinasDeTreino> { // Renomeado
+class _TelaListaRotinasDeTreinoState extends State<TelaListaRotinasDeTreino> { 
   final RotinaDeTreinoService _servico = RotinaDeTreinoService(); // Renomeado _service para _servico
-  List<RotinaDeTreino> _rotinas = []; // Renomeado _routines para _rotinas
+  List<RotinaDeTreino> _rotinas = []; 
 
   @override
   void initState() {
@@ -36,43 +36,43 @@ class _TelaListaRotinasDeTreinoState extends State<TelaListaRotinasDeTreino> { /
     _carregarRotinas(); // Renomeado _loadRoutines para _carregarRotinas
   }
 
-  Future<void> _carregarRotinas() async { // Renomeado _loadRoutines para _carregarRotinas
-    final rotinas = await _servico.getRotinas(); // Renomeado e chamando método do serviço traduzido
+  Future<void> _carregarRotinas() async { 
+    final rotinas = await _servico.getRotinas(); 
     setState(() {
       _rotinas = rotinas;
     });
   }
 
-  void _irParaAdicionarRotina() async { // Renomeado _goToAddRoutine
-    final criado = await Navigator.push( // Renomeado 'created' para 'criado'
+  void _irParaAdicionarRotina() async { 
+    final criado = await Navigator.push( 
       context,
-      MaterialPageRoute(builder: (_) => TelaFormularioRotina()), // Referência à tela de formulário traduzida
+      MaterialPageRoute(builder: (_) => TelaFormularioRotina()), 
     );
 
     if (criado == true) {
-      _carregarRotinas(); // Recarregar rotinas
+      _carregarRotinas(); 
     }
   }
 
-  void _abrirDetalhesDaRotina(RotinaDeTreino rotina) { // Renomeado _openRoutineDetail e parâmetro
+  void _abrirDetalhesDaRotina(RotinaDeTreino rotina) { 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => TelaDetalhesRotina(rotina: rotina)), // Referência à tela de detalhes traduzida
+      MaterialPageRoute(builder: (_) => TelaDetalhesRotina(rotina: rotina)), 
     );
   }
 
-  void _irParaEditarRotina(RotinaDeTreino rotina) async { // Renomeado _goToEditRoutine e parâmetro
-    final atualizado = await Navigator.push( // Renomeado 'updated' para 'atualizado'
+  void _irParaEditarRotina(RotinaDeTreino rotina) async { 
+    final atualizado = await Navigator.push( 
       context,
-      MaterialPageRoute(builder: (_) => TelaFormularioRotina(rotina: rotina)), // Referência à tela de formulário traduzida
+      MaterialPageRoute(builder: (_) => TelaFormularioRotina(rotina: rotina)), 
     );
     if (atualizado == true) {
-      _carregarRotinas(); // Recarregar rotinas
+      _carregarRotinas(); 
     }
   }
 
   Future<void> _deletarRotina(int idRotina) async { // Renomeado _deleteRoutine e parâmetro
-    final confirmar = await showDialog<bool>( // Renomeado 'confirm' para 'confirmar'
+    final confirmar = await showDialog<bool>( 
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Confirmar Exclusão'),
@@ -91,7 +91,7 @@ class _TelaListaRotinasDeTreinoState extends State<TelaListaRotinasDeTreino> { /
     );
 
     if (confirmar == true) {
-      await _servico.deletarRotina(idRotina); // Chamando método traduzido do serviço
+      await _servico.deletarRotina(idRotina); 
       _carregarRotinas(); // Recarregar rotinas
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Rotina excluída com sucesso!')),
@@ -131,13 +131,13 @@ class _TelaListaRotinasDeTreinoState extends State<TelaListaRotinasDeTreino> { /
                         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: rotina.exercicios.isEmpty // CORREÇÃO: Não é mais anulável
+                          children: rotina.exercicios.isEmpty 
                               ? [Text('Nenhum exercício nesta rotina.')]
                               : rotina.exercicios.map((exercicio) { // Acessando 'exercicios' da rotina e renomeando
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 4.0),
                                     child: Text(
-                                      '• ${exercicio.nome}: ${exercicio.series}x${exercicio.repeticoes} (${exercicio.carga})', // Acessando propriedades do exercício
+                                      '• ${exercicio.nome}: ${exercicio.series}x${exercicio.repeticoes} (${exercicio.carga})', 
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   );
@@ -153,7 +153,7 @@ class _TelaListaRotinasDeTreinoState extends State<TelaListaRotinasDeTreino> { /
                           ),
                           IconButton(
                             icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _deletarRotina(rotina.id!), // Chamando método traduzido
+                            onPressed: () => _deletarRotina(rotina.id!),
                           ),
                         ],
                       ),
@@ -163,7 +163,7 @@ class _TelaListaRotinasDeTreinoState extends State<TelaListaRotinasDeTreino> { /
               },
             ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _irParaAdicionarRotina, // Chamando método traduzido
+        onPressed: _irParaAdicionarRotina, 
         child: Icon(Icons.add),
         tooltip: 'Adicionar nova rotina',
       ),

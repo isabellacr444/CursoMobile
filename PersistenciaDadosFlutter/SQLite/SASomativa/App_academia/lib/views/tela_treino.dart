@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:treino/models/exercicio.dart'; // Importação do modelo Exercicio atualizado
-import 'package:treino/models/rotina_de_treino.dart'; // Importação do modelo RotinaDeTreino atualizado
+import 'package:treino/models/rotina_de_treino.dart'; 
 
-import 'package:treino/services/exercicio_service.dart'; // Importação do Serviço de Exercício atualizado
-import 'package:treino/services/rotina_de_treino_service.dart'; // Importação do Serviço de Rotina de Treino atualizado
+import 'package:treino/services/exercicio_service.dart'; 
+import 'package:treino/services/rotina_de_treino_service.dart'; 
 
 class TelaFormularioRotina extends StatefulWidget { // Renomeado para TelaFormularioRotina
-  final RotinaDeTreino? rotina; // Renomeado para 'rotina'
+  final RotinaDeTreino? rotina; 
 
-  TelaFormularioRotina({this.rotina}); // Renomeado para 'rotina'
-
+  TelaFormularioRotina({this.rotina}); 
   @override
-  _TelaFormularioRotinaState createState() => _TelaFormularioRotinaState(); // Renomeado
+  _TelaFormularioRotinaState createState() => _TelaFormularioRotinaState();
 }
 
-class _TelaFormularioRotinaState extends State<TelaFormularioRotina> { // Renomeado
-  final _chaveFormulario = GlobalKey<FormState>(); // Renomeado para _chaveFormulario
-  late String _nomeRotina; // Renomeado para _nomeRotina
-  late String _objetivo; // Renomeado para _objetivo
-  List<Exercicio> _exercicios = []; // Renomeado para _exercicios
+class _TelaFormularioRotinaState extends State<TelaFormularioRotina> { 
+  final _chaveFormulario = GlobalKey<FormState>(); 
+  late String _nomeRotina; 
+  late String _objetivo; 
+  List<Exercicio> _exercicios = []; 
 
-  final RotinaDeTreinoService _servicoRotina = RotinaDeTreinoService(); // Renomeado
-  final ExercicioService _servicoExercicio = ExercicioService(); // Renomeado
+  final RotinaDeTreinoService _servicoRotina = RotinaDeTreinoService(); 
+  final ExercicioService _servicoExercicio = ExercicioService(); 
 
   @override
   void initState() {
     super.initState();
     _nomeRotina = widget.rotina?.nome ?? ''; // Acessando 'nome' da rotina
-    _objetivo = widget.rotina?.objetivo ?? ''; // Acessando 'objetivo' da rotina
+    _objetivo = widget.rotina?.objetivo ?? ''; 
 
     if (widget.rotina != null && widget.rotina!.id != null) {
       _carregarExerciciosParaRotina(widget.rotina!.id!); // Renomeado e acessando 'id'
@@ -42,8 +41,7 @@ class _TelaFormularioRotinaState extends State<TelaFormularioRotina> { // Renome
   }
 
   Future<void> _adicionarOuEditarExercicio({Exercicio? exercicio, int? indice}) async { // Renomeado e parâmetros traduzidos
-    // Implemente a lógica de adicionar/editar exercício via diálogo ou nova tela.
-    // Exemplo usando um diálogo simples para adicionar um novo exercício à lista temporária:
+   
     final novoExercicio = await showDialog<Exercicio>(
       context: context,
       builder: (context) => AlertDialog(
@@ -59,7 +57,7 @@ class _TelaFormularioRotinaState extends State<TelaFormularioRotina> { // Renome
         if (indice != null) {
           _exercicios[indice] = novoExercicio; // Atualiza exercício existente
         } else {
-          _exercicios.add(novoExercicio); // Adiciona novo exercício
+          _exercicios.add(novoExercicio); 
         }
       });
     }
@@ -87,16 +85,17 @@ class _TelaFormularioRotinaState extends State<TelaFormularioRotina> { // Renome
       } else {
         await _servicoRotina.atualizarRotina(novaRotina); // Chamando método traduzido do serviço
         idRotinaSalva = novaRotina.id!;
-        // Antes de inserir os novos, apaga os antigos para evitar duplicação em caso de edição
-        await _servicoExercicio.deletarExerciciosPorIdRotina(idRotinaSalva); // Chamando método traduzido do serviço
+     
+        await _servicoExercicio.deletarExerciciosPorIdRotina(idRotinaSalva); 
+
       }
 
-      for (var exercicio in _exercicios) { // Itera sobre _exercicios
-        exercicio.idRotina = idRotinaSalva; // Atribui idRotina
-        await _servicoExercicio.inserirExercicio(exercicio); // Chamando método traduzido do serviço
+      for (var exercicio in _exercicios) { 
+        exercicio.idRotina = idRotinaSalva; 
+        await _servicoExercicio.inserirExercicio(exercicio); 
       }
 
-      Navigator.pop(context, true); // Retorna 'true' para indicar sucesso
+      Navigator.pop(context, true); 
     }
   }
 

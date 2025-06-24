@@ -1,12 +1,12 @@
 // lib/views/tela_detalhes_rotina.dart
 import 'package:flutter/material.dart';
-import 'package:treino/models/rotina_de_treino.dart'; // Importação do modelo RotinaDeTreino atualizado
-import 'package:treino/models/exercicio.dart'; // Importação do modelo Exercicio atualizado
-import 'package:treino/services/exercicio_service.dart'; // Importação do Serviço de Exercícios atualizado
-import 'package:treino/views/tela_exercicio.dart'; // Sua tela de formulário de exercício traduzida
+import 'package:treino/models/rotina_de_treino.dart'; 
+import 'package:treino/models/exercicio.dart'; 
+import 'package:treino/services/exercicio_service.dart'; 
+import 'package:treino/views/tela_exercicio.dart';
 
-class TelaDetalhesRotina extends StatefulWidget { // Renomeado para TelaDetalhesRotina
-  final RotinaDeTreino rotina; // Renomeado de 'routine' para 'rotina'
+class TelaDetalhesRotina extends StatefulWidget { 
+  final RotinaDeTreino rotina; 
 
   TelaDetalhesRotina({required this.rotina}); // Renomeado 'routine' para 'rotina'
 
@@ -14,9 +14,9 @@ class TelaDetalhesRotina extends StatefulWidget { // Renomeado para TelaDetalhes
   _TelaDetalhesRotinaState createState() => _TelaDetalhesRotinaState(); // Renomeado
 }
 
-class _TelaDetalhesRotinaState extends State<TelaDetalhesRotina> { // Renomeado
-  final ExercicioService _servicoExercicio = ExercicioService(); // Renomeado _exerciseService para _servicoExercicio
-  late Future<List<Exercicio>> _exerciciosFuturos; // Renomeado _exercisesFuture para _exerciciosFuturos
+class _TelaDetalhesRotinaState extends State<TelaDetalhesRotina> { 
+  final ExercicioService _servicoExercicio = ExercicioService(); 
+  late Future<List<Exercicio>> _exerciciosFuturos; 
 
   @override
   void initState() {
@@ -24,8 +24,8 @@ class _TelaDetalhesRotinaState extends State<TelaDetalhesRotina> { // Renomeado
     _carregarExercicios(); // Renomeado _loadExercises para _carregarExercicios
   }
 
-  void _carregarExercicios() { // Renomeado _loadExercises para _carregarExercicios
-    if (widget.rotina.id != null) { // Acessando 'rotina.id'
+  void _carregarExercicios() { 
+    if (widget.rotina.id != null) { 
       setState(() {
         _exerciciosFuturos = _servicoExercicio.getExerciciosPorIdRotina(widget.rotina.id!); // Acessando 'rotina.id' e método do serviço traduzido
       });
@@ -52,7 +52,7 @@ class _TelaDetalhesRotinaState extends State<TelaDetalhesRotina> { // Renomeado
     );
 
     if (resultado == true) { // Ou se TelaFormularioExercicio retorna o exercício, capture-o
-      _carregarExercicios(); // Recarrega os exercícios após adicionar/editar
+      _carregarExercicios(); 
     }
   }
 
@@ -60,15 +60,15 @@ class _TelaDetalhesRotinaState extends State<TelaDetalhesRotina> { // Renomeado
     final resultado = await Navigator.push( // Renomeado 'result' para 'resultado'
       context,
       MaterialPageRoute(
-        builder: (context) => TelaFormularioExercicio( // Referência à tela de formulário traduzida
+        builder: (context) => TelaFormularioExercicio( // Referên
           idRotina: widget.rotina.id!, // Passa o ID da rotina para o formulário
-          exercicio: exercicio, // Passa o exercício para edição
+          exercicio: exercicio, 
         ),
       ),
     );
 
     if (resultado == true) { // Se o formulário retorna true ao salvar/editar
-      _carregarExercicios(); // Recarrega os exercícios
+      _carregarExercicios(); 
     }
   }
 

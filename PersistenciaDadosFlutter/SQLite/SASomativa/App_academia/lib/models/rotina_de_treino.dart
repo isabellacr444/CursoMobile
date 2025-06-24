@@ -1,12 +1,14 @@
 // lib/models/exercicio.dart
 class Exercicio { // Renomeado para Exercicio (singular)
   int? id;
-  int idRotina; // Renomeado para idRotina (Chave estrangeira)
-  String nome; // Renomeado para nome
-  int series; // Renomeado para series
-  String repeticoes; // Renomeado para repeticoes
-  String carga; // Renomeado para carga
-  String tipo; // Renomeado para tipo
+  int idRotina; // Renomeado para idRotina 
+  String nome; 
+  int series; 
+  String repeticoes; 
+  String carga; 
+
+
+  String tipo; 
 
   Exercicio({
     this.id,

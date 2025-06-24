@@ -4,17 +4,17 @@ import 'package:treino/services/rotina_de_treino_service.dart'; // Importação 
 
 
 class TelaFormularioRotina extends StatefulWidget { // Renomeado para TelaFormularioRotina
-  final RotinaDeTreino? rotina; // Renomeado de 'routine' para 'rotina' (opcional para editar futuramente)
+  final RotinaDeTreino? rotina; 
 
-  TelaFormularioRotina({this.rotina}); // Renomeado 'routine' para 'rotina'
+  TelaFormularioRotina({this.rotina});
 
   @override
   _TelaFormularioRotinaState createState() => _TelaFormularioRotinaState(); // Renomeado
 }
 
-class _TelaFormularioRotinaState extends State<TelaFormularioRotina> { // Renomeado
+class _TelaFormularioRotinaState extends State<TelaFormularioRotina> { 
   final _chaveFormulario = GlobalKey<FormState>(); // Renomeado para _chaveFormulario
-  final RotinaDeTreinoService _servicoRotina = RotinaDeTreinoService(); // Renomeado _routineService para _servicoRotina
+  final RotinaDeTreinoService _servicoRotina = RotinaDeTreinoService(); 
 
   late String _nome; // Renomeado para _nome
   late String _objetivo; // Renomeado para _objetivo
@@ -27,8 +27,8 @@ class _TelaFormularioRotinaState extends State<TelaFormularioRotina> { // Renome
   }
 
   Future<void> _salvarRotina() async { // Renomeado _saveRoutine para _salvarRotina
-    if (_chaveFormulario.currentState!.validate()) { // Referência à _chaveFormulario
-      _chaveFormulario.currentState!.save(); // Referência à _chaveFormulario
+    if (_chaveFormulario.currentState!.validate()) { 
+      _chaveFormulario.currentState!.save(); 
 
       final rotina = RotinaDeTreino( // Instanciando o modelo RotinaDeTreino
         id: widget.rotina?.id,
@@ -37,9 +37,9 @@ class _TelaFormularioRotinaState extends State<TelaFormularioRotina> { // Renome
       );
 
       if (widget.rotina == null) {
-        await _servicoRotina.inserirRotina(rotina); // Chamando o método 'inserirRotina' do serviço traduzido
+        await _servicoRotina.inserirRotina(rotina); 
       } else {
-        await _servicoRotina.atualizarRotina(rotina); // Chamando o método 'atualizarRotina' do serviço traduzido
+        await _servicoRotina.atualizarRotina(rotina); 
       }
 
       Navigator.pop(context); // Voltar para a lista depois de salvar
