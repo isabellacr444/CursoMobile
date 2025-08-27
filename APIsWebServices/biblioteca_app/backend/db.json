@@ -1,0 +1,46 @@
+{
+  "usuarios": [
+    {
+      "id": "1",
+      "nome": "João Pedro",
+      "email": "joao@example.com"
+    },
+    {
+      "id": "2",
+      "nome": "Maria Silva",
+      "email": "maria@example.com"
+    },
+    {
+      "id": "f6ee"
+    },
+    {
+      "id": "9941",
+      "nome": "Pedro Costa",
+      "email": "Pedro@gmail.com"
+    }
+  ],
+  "livros": [
+    {
+      "id": "1",
+      "titulo": "O Senhor dos Anéis",
+      "autor": "J.R.R. Tolkien",
+      "disponivel": false
+    },
+    {
+      "id": "2",
+      "titulo": "1984",
+      "autor": "George Orwell",
+      "disponivel": true
+    }
+  ],
+  "emprestimos": [
+    {
+      "id": "1",
+      "usuario_id": 1,
+      "livro_id": 1,
+      "data_emprestimo": "2025-08-27",
+      "data_devolucao": "2025-09-06",
+      "devolvido": false
+    }
+  ]
+}
