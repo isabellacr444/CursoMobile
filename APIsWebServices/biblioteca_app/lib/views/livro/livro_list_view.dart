@@ -17,10 +17,10 @@ class _LivroListViewState extends State<LivroListView> {
   final _controller = LivroController();
   List<LivroModel> _livros = [];
   bool _carregando = true;
-  //atributos para fazer a busca
   final _buscaField = TextEditingController();
   List<LivroModel> _livrosFiltrados = [];
   List<LivroModel> _livrosSelecionados = [];
+
   @override
   void initState() {
     super.initState();
@@ -32,8 +32,8 @@ class _LivroListViewState extends State<LivroListView> {
       _carregando = true;
     });
     try {
-      _livros = await _controller.fetchAll(); //busco no banco
-      _livrosFiltrados = _livros; // copio
+      _livros = await _controller.fetchAll();
+      _livrosFiltrados = _livros;
     } catch (e) {
       //Tratar Erro
     }
@@ -75,7 +75,7 @@ class _LivroListViewState extends State<LivroListView> {
         // Tratar erro
       }
     }
-
+    //botão flutuante
     //navegar para uma nova tela (formulario)
     void _abrirForm({LivroModel? livro}) async {
       //livro entra no parâmetro, não é obrigatório
@@ -92,13 +92,8 @@ class _LivroListViewState extends State<LivroListView> {
         _livrosFiltrados = _livros
             .where(
               (livro) =>
-                  livro.titulo!.toLowerCase().contains(
-                    busca,
-                  ) //filtra pelo título do livro
-                  ||
-                  livro.autor!.toLowerCase().contains(
-                    busca,
-                  ), //filtra pelo autor do livro
+                  (livro.titulo ?? '').toLowerCase().contains(busca) ||
+                  (livro.autor ?? '').toLowerCase().contains(busca),
             )
             .toList();
       });
@@ -132,8 +127,8 @@ class _LivroListViewState extends State<LivroListView> {
                                 ), //levar as informações do livro para tela de formulário
                                 icon: Icon(Icons.edit),
                               ),
-                              title: Text(livro.titulo!),
-                              subtitle: Text(livro.autor!),
+                              title: Text(livro.titulo ?? ''),
+                              subtitle: Text(livro.autor ?? ''),
                               trailing: IconButton(
                                 onPressed: () => _deletar(livro),
                                 icon: Icon(Icons.delete, color: Colors.red),
