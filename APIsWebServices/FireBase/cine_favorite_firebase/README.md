@@ -26,46 +26,54 @@ Construindo um aplicativo do Zero - O CineFavorite permitirá criar uma conta e 
         - login()
         - logout()
 
-    - Filme (Movie) : Clase modelada pelo dev
-        - titulo: number
-        - id: string
-        - PosterPath: string
+    - Filme (Movie) : Classe modelada pelo dev
+        - number id:
+        - String titulo:
+        - String PosterPath
         - boolean favorito
         - double Nota
         - adicionar()
         - update()
         - remover()
-        -listarFavoritos()
+        - listarFavoritos()
 
-  ````mermaid
+```mermaid
 
-  classDiagram      
-   class User{
-    +String uid
-    +String email
-    +String password
-    +CreateUser()
-    +login()
-    +logout()
-   }
+classDiagram
+    class User{
+        +String uid
+        +String email
+        +String password
+        +createUser()
+        +login()
+        +logout()
+    }
 
-   class Movi{
-    +String id
-    +String title
-    +String posterPath
-    +Boolean Favorite
-    +double Rating
-    +addFavorite()
-    +removeFavorite()
-    +updateRating()
-    +read()
+    class Movie{
+        +String id
+        +String title
+        +String posterPath
+        +Boolean Favorite
+        +double Rating
+        +addFavorite()
+        +removeFavorite()
+        +updateRating()
+        +read()
+    } 
 
-   }
+    User "1"--"1+" Movie : "selecionar"
 
-   User "1"--"1+" Movie : " selecionar "
+```
+ 2. ### Diagrama de Uso
 
-    ````
+
+ 3. ### Diagrama de Fluxo
+
+
 
 ## Prototipagem
+
+-- o Link do figma 
+https://www.figma.com/design/Ef8i8DwEmk4RRhRDk9Jqwe/Untitled?node-id=0-1&t=DiWU1UKUDnZTi8sQ-1
 
 ## Codificação
