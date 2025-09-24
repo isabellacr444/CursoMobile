@@ -64,6 +64,8 @@ Construindo um aplicativo do Zero - O CineFavorite permitirá criar uma conta e 
 
    User "1"--"1+" Movie : " selecionar "
 
+    ````
+
 ## Prototipagem
 
 ## Codificação
