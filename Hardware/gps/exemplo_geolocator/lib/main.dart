@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 
-void main() {
-  runApp(MaterialApp(home: LocationScreen()));
+void main(){
+  runApp(MaterialApp(
+    home: LocationScreen(),
+  ));
 }
 
 class LocationScreen extends StatefulWidget {
@@ -15,29 +18,49 @@ class LocationScreen extends StatefulWidget {
 class _LocationScreenState extends State<LocationScreen> {
   //atributos
   String mensagem = "";
-
+  
   //método para pegar a localização atual do dispositivo
-  void getLocation() async {
+  void getLocation() async{
     bool servicoDisponivel;
     LocationPermission permissao;
 
-    //verifica se o serviço esta dispo
+    //verifica se o serviço esta disponivel
     servicoDisponivel = await Geolocator.isLocationServiceEnabled();
-    if (!servicoDisponivel) {
+    if(!servicoDisponivel){
       mensagem = "Serviço de localização desabilitado";
     }
+    //solicta permissão para o usuário
     permissao = await Geolocator.checkPermission();
-    if (permissao == LocationPermission.denied) {
+    if(permissao == LocationPermission.denied){
       permissao = await Geolocator.requestPermission();
-      if (permissao == LocationPermission.denied) {
+      if(permissao == LocationPermission.denied){
         mensagem = "Permissão de localização negada";
       }
     }
+    //após solictar permissão , ou se a permissão já estiver dada
+    //pego a localização do dispositivo
+    Position position = await Geolocator.getCurrentPosition();
+    mensagem = "Latitude: ${position.latitude}, Longitude: ${position.longitude}";
+    setState(() {
+      
+    });
   }
-    Position
 
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(title: Text("GPS - Localização"),),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(mensagem),
+            ElevatedButton(onPressed: () async{getLocation();},
+             child: Text("Obter Localização"))
+          ],
+        ),
+      ),
+    );
   }
 }
