@@ -66,10 +66,66 @@ classDiagram
 ```
  2. ### Diagrama de Uso
 
+Ações que o Atores fazem
+
+- Usúario:
+- Registrar
+- Login
+- Logout
+- Buscar filmes na API  
+- Adicionar aos Favoritos
+- Dar nota ao filmes
+- Remover dos Favoritos
+
+```mermaid
+
+graph TD
+subgraph "Ações"
+    uc1([Registrar])
+    uc2([Login])
+    uc3([LogOut])
+    uc4([Search Movie])
+    uc5([Favorite Movie])
+    uc6([Rating Movie])
+    c7([Remove Favorite Movie])
+    end
+
+    User([Usuario])
+
+      user --> uc1
+      user --> uc2
+      user --> uc3
+      user --> uc4
+      user --> uc5
+      user --> uc6
+      user --> uc7
+
+     uc1 --> uc2
+     uc2 --> uc4
+     uc2 --> uc5
+     uc2 --> uc6
+     uc2 --> uc7
+
+  
+```
+
+
 
  3. ### Diagrama de Fluxo
 
+Determina o caminho que o ator percorre para realizar uma ação
 
+- Ação de Login
+
+```mermaid
+
+A[Inicio] -->B{Tela de Login}
+B -->C[Inserir email e senha]
+C -->D[Validar as Credenciais do Usuario]
+D -->SIM --> E[Tela de favoritos]
+D -->Não --> F[Mensagem de Erro]
+
+```
 
 ## Prototipagem
 

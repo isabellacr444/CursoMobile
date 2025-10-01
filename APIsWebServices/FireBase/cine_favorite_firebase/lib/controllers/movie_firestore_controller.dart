@@ -79,4 +79,9 @@ class MovieFirestoreController {
     await _db.collection("users").doc(currentUser!.uid).collection("favorite_movies")
     .doc(movieId.toString()).update({"rating":rating});
   }
-}
+  //atualizar
+    void updateMovieRating(int movieId, double rating) async{
+    if(currentUser == null) return;
+    await _db.collection("users").doc(currentUser!.uid).collection("favorite_movies")
+    .doc(movieId.toString()).update({"rating":rating});
+    }}

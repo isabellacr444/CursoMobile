@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 void main() async{
@@ -12,7 +13,7 @@ void main() async{
     title: "Cine Favorite",
     theme: themeData(
       primarySwatch: Colors.orange,
-      brightness: brightness.dart
+      brightness: Brightness.dark,
     ),
     home: AuthStream(),//permite a navegação da tela
   ));
